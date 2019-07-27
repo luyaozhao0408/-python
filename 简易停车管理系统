@@ -1,0 +1,76 @@
+import time
+
+# 最大停车数
+max_car = 100
+# 当前停车数,初始为0
+cur_car = 0
+# 当前停车列表,初始设置为空
+car_list = []
+time.asctime()
+
+class car(object):
+    """定义一个车类包括 车主人名 车牌 开始停放时间"""
+
+    def __init__(self, plate_number, starttime, carname):
+        super(car, self).__init__()
+        self.plate_number = plate_number
+        self.starttime = starttime
+        self.carname = carname
+
+    def get_plate_number(self):
+        return self.plate_number
+
+    def get_starttime(self):
+        return self.starttime
+
+    def get_carname(self):
+        return self.carname
+
+
+if __name__ == '__main__':
+    """
+    需要实现功能 1.停车 2.出场 3. 查询 .4 退出
+    """
+    while True:
+        print("-------------欢迎来到-停车管理系统---------")
+        choice = input("请选则需要的功能 1,停车 2,出场,3.查询 ,4.退出")
+        print("********************************************")
+        if choice == '1':
+            """先判断是否有空车位"""
+            if 100 - len(car_list) == 0:
+                print("对不起,车位已经没有了,请你重新找吧")
+                break
+            else:
+                print("恭喜你,还有%d车位"%(100-len(car_list)))
+            carname = input("停车费为 停车收费5元/小时;,请输入你的名字:")
+            plate_number = int(input("请输入你的车牌:"))
+            starttime = time.time()  # 记录当前时间
+            carname = car(plate_number, starttime, carname, )  # 新建对象
+            car_list.append(carname)  # 将汽车对象存入停车列表
+            # print(len(car_list))   测试用
+            print("%s的车牌号为%s的车进场了 当前时间%s" % (carname.get_carname(), plate_number,time.ctime()))
+        elif choice == '2':
+            # 第一步先查询汽车是否存在,如果不存在建议其联系管理员
+            plate_numbers = int(input("请输入你的车牌:"))
+            for i in car_list:
+                if plate_numbers == i.get_plate_number():
+                    end_time = time.time()
+                    times = end_time-i.get_starttime()
+                    print("你停了%f小时,应该付款%d元" % (times/3600, (times / 3600) * 5))
+                    car_list.remove(i)
+                else:
+                    print("你的车辆不存在,如果有问题请联系管理员")
+                    break
+        elif choice == '3':
+            plate_numbers = int(input("请输入你的车牌"))
+            for i in car_list:
+                if plate_numbers == i.get_plate_number():
+                    end_time = time.time()
+                    times = end_time - i.get_starttime()
+                    print("你停了%f小时,应该付款%d元" % (times / 3600, (times / 3600) * 5))
+                else:
+                    print("你的车辆不存在,如果有问题请联系管理员")
+                    break
+        else:
+            break
+    print("感谢您的使用,再见")
